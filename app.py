@@ -1,23 +1,24 @@
 import streamlit as st
 import tempfile
 import os
-from paper_parser import extract_sections_from_pdf
+from paper_parser import extract_sections_from_document
 from rag_chain import build_vector_store_from_sections, get_research_qa_chain
 
 st.set_page_config(page_title="Research Paper Assistant", layout="wide")
 st.title("📚 Research Paper Assistant")
-st.markdown("Upload a computer science paper (PDF) – ask questions grounded in the paper.")
+st.markdown("Upload a computer science paper (PDF, DOCX, PPTX) – ask questions grounded in the paper.")
 
-uploaded_file = st.file_uploader("Choose a PDF", type="pdf")
+uploaded_file = st.file_uploader("Choose a document", type=["pdf", "docx", "pptx"])
 
 if uploaded_file is not None:
     # Save uploaded file to a temporary file
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+    ext = os.path.splitext(uploaded_file.name)[1].lower()
+    with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
         tmp.write(uploaded_file.getvalue())
         tmp_path = tmp.name
     
     with st.spinner("Parsing paper sections..."):
-        sections = extract_sections_from_pdf(tmp_path)
+        sections = extract_sections_from_document(tmp_path)
     
     st.success(f"Loaded {len(sections)} sections: {', '.join([s['heading'] for s in sections])}...")
     
@@ -56,4 +57,4 @@ if uploaded_file is not None:
     # Clean up temporary file
     os.unlink(tmp_path)
 else:
-    st.info("👈 Upload a PDF to begin.")
+    st.info("👈 Upload a document to begin.")

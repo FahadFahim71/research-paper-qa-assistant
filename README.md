@@ -4,7 +4,7 @@ An interactive Streamlit application that allows users to upload computer scienc
 
 ## Features
 
-- 📄 **PDF Upload**: Upload any computer science research paper in PDF format
+- 📄 **Document Upload**: Upload any computer science research paper in PDF, DOCX, or PPTX format
 - 🔍 **Section Parsing**: Automatically extracts and identifies paper sections (Abstract, Introduction, Methodology, etc.)
 - 💬 **Question Answering**: Ask natural language questions about the paper and get accurate, sourced answers
 - 📚 **Contextual Answers**: Answers are grounded in the paper's content with citations to relevant sections
@@ -13,8 +13,8 @@ An interactive Streamlit application that allows users to upload computer scienc
 
 ## How It Works
 
-1. **Upload Paper**: Users upload a PDF research paper
-2. **Section Extraction**: The application parses the PDF to identify logical sections using heading patterns
+1. **Upload Paper**: Users upload a PDF, DOCX, or PPTX research paper
+2. **Section Extraction**: The application parses the document to identify logical sections using heading patterns
 3. **Vector Store**: Paper sections are embedded and stored in a ChromaDB vector store
 4. **Question Processing**: When a question is asked:
    - Relevant sections are retrieved using semantic search
@@ -48,14 +48,15 @@ An interactive Streamlit application that allows users to upload computer scienc
 - `chromadb` - Vector database for embeddings
 - `sentence-transformers` - Text embedding models
 - `pypdf` - PDF parsing library
-- `python-docx` - DOCX handling (for potential future extensions)
+- `python-docx` - DOCX handling
+- `python-pptx` - PPTX handling
 - `beautifulsoup4` - HTML/XML parsing
 - `requests` - HTTP library
 
 ## Usage
 
 1. Launch the application: `streamlit run app.py`
-2. Upload a PDF research paper using the file uploader
+2. Upload a research paper (PDF, DOCX, PPTX) using the file uploader
 3. Wait for the paper to be processed (sections will be displayed)
 4. Ask questions in the text input box (e.g., "What is the main contribution?", "Which dataset was used?")
 5. View the answer and click on "See retrieved excerpts" to verify the sources
@@ -70,7 +71,7 @@ An interactive Streamlit application that allows users to upload computer scienc
 
 ## How Section Parsing Works
 
-The application uses pattern matching to identify section headings in PDFs:
+The application uses pattern matching to identify section headings in documents:
 - Matches common section names (Abstract, Introduction, Methodology, etc.)
 - Handles numbered headings (e.g., "1. Introduction", "2.1 Related Work")
 - Combines section numbers with titles when split across lines
@@ -78,14 +79,13 @@ The application uses pattern matching to identify section headings in PDFs:
 
 ## Limitations
 
-- Works best with structured PDFs containing clear section headings
+- Works best with structured documents containing clear section headings
 - May struggle with multi-column layouts or unconventional formatting
 - Answer quality depends on the underlying language model's capabilities
 - Currently optimized for computer science papers (section keywords reflect CS conventions)
 
 ## Future Improvements
 
-- Support for additional document formats (DOCX, PPTX)
 - Improved section detection using ML models
 - Multi-paper comparison capabilities
 - Export functionality for Q&A sessions
